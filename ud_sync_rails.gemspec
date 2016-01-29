@@ -1,10 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'ud/sync/rails/version'
+require 'ud_sync_rails/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "ud-sync-rails"
+  spec.name          = "ud_sync_rails"
   spec.version       = Ud::Sync::Rails::VERSION
   spec.authors       = ["Alexandre de Oliveira"]
   spec.email         = ["chavedomundo@gmail.com"]
@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
+  spec.add_dependency "railties", ">=4.2"
 end
