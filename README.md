@@ -26,7 +26,15 @@ And then execute:
 
 ## Usage
 
-**Step 1: add the route**
+**Step 1: runs migrations**
+
+```
+rake db:migrate
+```
+
+`ud-sync` records operations and configurations in database tables.
+
+**Step 2: add the route**
 
 ```ruby
 Rails.application.routes.draw do
@@ -36,7 +44,7 @@ Rails.application.routes.draw do
 end
 ```
 
-**Step 2: configure your models**
+**Step 3: configure your models**
 
 ```ruby
 class Post < ActiveRecord::Base
@@ -48,7 +56,7 @@ end
 
 Whenever you save or delete a post, this will save the operation automatically.
 
-**Step 3: consume /ud_sync/operations**
+**Step 4: consume /ud_sync/operations**
 
 When you access `GET /ud_sync/operations`, you will get a response such as the
 following.
@@ -80,7 +88,7 @@ with id `record-2`, this operation will be recorded. When DeviceB comes online,
 it will request the operations endpoint and check that the Post was deleted
 online. It will then delete it locally so that it's synchronized with DeviceA.
 
-**Step 4: define current_user in your application controller**
+**Step 5: define current_user in your application controller**
 
 If your `ApplicationController` has `current_user` defined, `GET /operations`
 will only return Operations which `owner_id` equals `current_user.id`
