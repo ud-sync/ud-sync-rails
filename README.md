@@ -19,7 +19,7 @@ And then execute:
 
 ## Usage
 
-**Step 1:** add the route
+**Step 1: add the route**
 
 ```ruby
 Rails.application.routes.draw do
@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 end
 ```
 
-**Step 2:** configure your models
+**Step 2: configure your models**
 
 ```ruby
 class Post < ActiveRecord::Base
@@ -41,25 +41,25 @@ end
 
 Whenever you save or delete a post, this will save the operation automatically.
 
-**Step 3:** consume /ud_sync/operations
+**Step 3: consume /ud_sync/operations**
 
 When you access `GET /ud_sync/operations`, you will get a response such as the
 following.
 
 ```json
 {
-  'operations' => [{
-    'id' => 1,
-    'name' => 'save',
-    'record_id' => 'record-1,
-    'entity' => 'User',
-    'date' => '2025-10-23T10:32:41Z',
+  "operations" => [{
+    "id" => 1,
+    "name" => "save",
+    "record_id" => "record-1",
+    "entity" => "User",
+    "date" => "2025-10-23T10:32:41Z"
   }, {
-    'id' => 2,
-    'name' => 'delete',
-    'record_id' => 'record-2',
-    'entity' => 'Post',
-    'date' => '2025-10-23T11:23:23Z',
+    "id" => 2,
+    "name" => "delete",
+    "record_id" => "record-2",
+    "entity" => "Post",
+    "date" => "2025-10-23T11:23:23Z"
   }]
 }
 ```
@@ -73,9 +73,10 @@ with id `record-2`, this operation will be recorded. When DeviceB comes online,
 it will request the operations endpoint and check that the Post was deleted
 online. It will then delete it locally so that it's synchronized with DeviceA.
 
-**Step 4:** define current_user in your application controller
+**Step 4: define current_user in your application controller**
 
-
+If your `ApplicationController` has `current_user` defined, `GET /operations`
+will only return Operations which `owner_id` equals `current_user.id`
 
 ### Customizing ud-sync-rails
 
@@ -107,10 +108,7 @@ When adding a new attribute via migration, do the following to clean up the
 cache:
 
 ```
-rm spec/dummy/db/*.sqlite3
-rm spec/dummy/db/schema.rb
-rake db:create db:migrate
-rake db:schema:dump
+bin/setup
 ```
 
 ## Contributing
