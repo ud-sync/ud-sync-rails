@@ -1,8 +1,9 @@
-# Ud::Sync::Rails
+# ud_sync_rails
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ud/sync/rails`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem will plug into your Rails models and save every operation that happens.
+With that information, it will expose `GET /ud_sync/operation` so that your
+mobile devices can come from offline and know what data was deleted in other
+devices, synchronizing automatically.
 
 ## Installation
 
@@ -16,19 +17,89 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install ud-sync-rails
-
 ## Usage
 
-TODO: Write usage instructions here
+**Step 1:** add the route
+
+```ruby
+Rails.application.routes.draw do
+  mount UdSync::Engine => "/ud_sync"
+
+  # ...
+end
+```
+
+**Step 2:** configure your models
+
+```ruby
+class Post < ActiveRecord::Base
+  ud_sync
+
+  # ...
+end
+```
+
+Whenever you save or delete a post, this will save the operation automatically.
+
+**Step 3:** consume /ud_sync/operations
+
+When you access `GET /ud_sync/operations`, you will get a response such as the
+following.
+
+```json
+{
+  'operations' => [{
+    'id' => 1,
+    'name' => 'save',
+    'record_id' => 'record-1,
+    'entity' => 'User',
+    'date' => '2025-10-23T10:32:41Z',
+  }, {
+    'id' => 2,
+    'name' => 'delete',
+    'record_id' => 'record-2',
+    'entity' => 'Post',
+    'date' => '2025-10-23T11:23:23Z',
+  }]
+}
+```
+
+`name` stands for the name of the operation, which could be `save` or `delete`.
+`record_id` is the id of the record that was processed. `entity` is the resource
+name and `date` when it happened.
+
+For example, when DeviceA running your offline ready mobile app deletes Post
+with id `record-2`, this operation will be recorded. When DeviceB comes online,
+it will request the operations endpoint and check that the Post was deleted
+online. It will then delete it locally so that it's synchronized with DeviceA.
+
+**Step 4:** define current_user in your application controller
+
+
+
+### Customizing ud-sync-rails
+
+You can customize it by changing `ud_sync` call:
+
+```ruby
+class Post < ActiveRecord::Base
+  belongs_to :user
+
+  ud_sync entity: 'Article', id: :uuid, owner: :user
+  # ...
+end
+```
+
+`entity` is the name of the resource. If not specified, the name of the model
+class will be used. `id` is the attribute you want to use as id - for example,
+when you use uuids, you might not want to expose your internal ids. `owner`
+is the association that represents the user that has the current resource. With
+that, you can return only the operations belonging to the current user.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+After checking out the repo, run `bin/setup` to install dependencies. Then, run
+`rake` to run the tests.
 
 ### Testing
 
@@ -41,7 +112,6 @@ rm spec/dummy/db/schema.rb
 rake db:create db:migrate
 rake db:schema:dump
 ```
-
 
 ## Contributing
 

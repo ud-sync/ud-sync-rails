@@ -5,3 +5,7 @@ IFS=$'\n\t'
 bundle install
 
 # Do any other automated setup that you need to do here
+rm spec/dummy/db/*.sqlite3
+rm spec/dummy/db/schema.rb
+rake db:create db:migrate
+rake db:schema:dump
