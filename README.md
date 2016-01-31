@@ -55,18 +55,18 @@ following.
 
 ```json
 {
-  "operations" => [{
-    "id" => 1,
-    "name" => "save",
-    "record_id" => "record-1",
-    "entity" => "User",
-    "date" => "2025-10-23T10:32:41Z"
+  "operations": [{
+    "id": 1,
+    "name": "save",
+    "record_id": "record-1",
+    "entity": "User",
+    "date": "2025-10-23T10:32:41Z"
   }, {
-    "id" => 2,
-    "name" => "delete",
-    "record_id" => "record-2",
-    "entity" => "Post",
-    "date" => "2025-10-23T11:23:23Z"
+    "id": 2,
+    "name": "delete",
+    "record_id": "record-2",
+    "entity": "Post",
+    "date": "2025-10-23T11:23:23Z"
   }]
 }
 ```
