@@ -1,7 +1,13 @@
 module UdSync
-  class OperationsController < ActionController::Base
+  class OperationsController < UdSync::ApplicationController
     def index
-      operations = UdSync::Operation.all
+      render body: false, status: 401 and return if forbidden?
+
+      operations = if current_user_present?
+                     UdSync::Operation.where(owner_id: current_user.id).all
+                   else
+                     UdSync::Operation.all
+                   end
 
       render json: {
         operations: operations.map do |operation|
@@ -14,6 +20,12 @@ module UdSync
           }
         end
       }
+    end
+
+    private
+
+    def current_user_present?
+      respond_to?(:current_user) && current_user.present?
     end
   end
 end
