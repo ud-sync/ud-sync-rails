@@ -1,4 +1,4 @@
-# ud_sync_rails
+# ud_sync_rails [![Build Status](https://travis-ci.org/ud-sync/ud-sync-rails.svg?branch=master)](https://travis-ci.org/ud-sync/ud-sync-rails)
 
 This gem will plug into your Rails models and save every operation that happens.
 With that information, it will expose `GET /ud_sync/operation` so that your
