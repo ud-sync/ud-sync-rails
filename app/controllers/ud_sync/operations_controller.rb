@@ -3,18 +3,24 @@ module UdSync
     def index
       render body: false, status: 401 and return if forbidden?
 
-      operations = if current_user_present?
-                     UdSync::Operation.where(owner_id: current_user.id).all
-                   else
-                     UdSync::Operation.all
-                   end
+      operations = UdSync::Operation
+      if current_user_present?
+        operations = operations.where(owner_id: current_user.id)
+      end
+
+      if params[:since].present?
+        since = DateTime.parse(params[:since])
+        operations = operations.where('created_at >= ?', since)
+      end
+
+      operations = operations.all
 
       render json: {
         operations: operations.map do |operation|
           {
-            id:        operation.id,
+            id:        operation.id.to_s,
             name:      operation.name,
-            record_id: operation.record_id,
+            record_id: operation.external_id,
             entity:    operation.entity_name,
             date:      operation.created_at.iso8601,
           }
