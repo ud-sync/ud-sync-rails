@@ -1,9 +1,16 @@
 # ud_sync_rails [![Build Status](https://travis-ci.org/ud-sync/ud-sync-rails.svg?branch=master)](https://travis-ci.org/ud-sync/ud-sync-rails)
 
-This gem will plug into your Rails models and save every operation that happens.
-With that information, it will expose `GET /ud_sync/operation` so that your
+ud-sync is a set of tools to allow client applications to work offline. This gem
+will help you on the server.
+
+This gem will plug into your Rails models and save every DB operation.
+With that information, it will expose `GET /ud_sync/operations` so that your
 mobile devices can come from offline and know what data was deleted in other
 devices, synchronizing automatically.
+
+We're aiming at building the client counterparts. Check the
+[ud-sync](https://github.com/ud-sync) organization for other languages
+(e.g [ud-sync-swift](Swift)).
 
 ## Installation
 
