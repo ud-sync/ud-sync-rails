@@ -4,7 +4,9 @@ module UdSync
     private
 
     def forbidden?
-      respond_to?(:current_user) && current_user.blank?
+      current_user.blank?
+    rescue NameError
+      false
     end
   end
 end

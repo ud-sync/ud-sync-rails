@@ -31,7 +31,9 @@ module UdSync
     private
 
     def current_user_present?
-      respond_to?(:current_user) && current_user.present?
+      current_user.present?
+    rescue NameError
+      false
     end
   end
 end
