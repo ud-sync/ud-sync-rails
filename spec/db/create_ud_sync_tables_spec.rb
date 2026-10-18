@@ -1,6 +1,6 @@
 require 'spec_integration_helper'
 
-RSpec.describe 'db/migrate/20160130183000_create_ud_sync_tables.rb' do
+RSpec.describe 'db/migrate/20160130183000_create_ud_sync_tables.rb', :use_fixtures do
   let(:migration_path) do
     File.expand_path('../../../db/migrate/20160130183000_create_ud_sync_tables.rb', __FILE__)
   end
@@ -9,8 +9,7 @@ RSpec.describe 'db/migrate/20160130183000_create_ud_sync_tables.rb' do
   def run_migration
     load migration_path
     migration = CreateUdSyncTables.new
-    migration.verbose = false
-    migration.migrate(:up)
+    ActiveRecord::Migration.suppress_messages { migration.migrate(:up) }
   end
 
   after { Object.send(:remove_const, :CreateUdSyncTables) if defined?(CreateUdSyncTables) }
@@ -34,23 +33,7 @@ RSpec.describe 'db/migrate/20160130183000_create_ud_sync_tables.rb' do
   end
 
   context 'when ud_sync_operations does not exist' do
-    around do |example|
-      connection.drop_table(:ud_sync_operations)
-      example.run
-    ensure
-      connection.drop_table(:ud_sync_operations, if_exists: true)
-      ActiveRecord::Schema.define do
-        create_table :ud_sync_operations do |t|
-          t.string :name, null: false
-          t.string :record_id
-          t.string :external_id, null: false
-          t.string :owner_id
-          t.string :entity_name, null: false
-          t.timestamps
-        end
-      end
-      UdSync::Operation.reset_column_information
-    end
+    before { connection.drop_table(:ud_sync_operations) }
 
     it 'creates the table' do
       run_migration

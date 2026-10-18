@@ -14,6 +14,9 @@ We're aiming at building the client counterparts. Check the
 
 ## Installation
 
+Version 0.2.0 requires Rails 6.0 or later. Apps on Rails 4.2 or 5.x should use
+version 0.1.1. The test suite runs on Rails 8.1.
+
 Add this line to your application's Gemfile:
 
 ```ruby
