@@ -23,6 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sqlite3", ">= 2.1"
   spec.add_development_dependency "awesome_print"
   spec.add_development_dependency "database_cleaner-active_record"
-  spec.add_dependency "rails", ">=4.2"
-  spec.add_dependency "railties", ">=4.2"
+  spec.add_dependency "rails", ">= 6.0"
+  spec.add_dependency "railties", ">= 6.0"
 end
