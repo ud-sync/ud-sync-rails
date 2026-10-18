@@ -4,7 +4,7 @@ ENV['RAILS_ENV'] ||= 'test'
 
 require 'ud_sync'
 require 'awesome_print'
-require 'database_cleaner'
+require 'database_cleaner/active_record'
 
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
