@@ -10,3 +10,5 @@
 /pkg/
 /spec/reports/
 /tmp/
+/spec/dummy/tmp/
+*.sqlite3-*

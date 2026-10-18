@@ -14,7 +14,7 @@ RSpec.describe "UdSync/Operations", type: :request do
           external_id: 'external_id',
           entity_name: 'Post'
         )
-        get "/ud_sync/operations", nil
+        get "/ud_sync/operations"
 
         expect(response.code).to eq('200')
         expect(json_response).to eq({
@@ -63,7 +63,7 @@ RSpec.describe "UdSync/Operations", type: :request do
         end
 
         it "signs the user in" do
-          get "/ud_sync/operations", nil
+          get "/ud_sync/operations"
 
           expect(response.code).to eq('200')
           expect(json_response).to eq({
@@ -86,7 +86,7 @@ RSpec.describe "UdSync/Operations", type: :request do
         end
 
         it "signs the user in" do
-          get "/ud_sync/operations", nil
+          get "/ud_sync/operations"
 
           expect(response.code).to eq('401')
         end
@@ -120,7 +120,7 @@ RSpec.describe "UdSync/Operations", type: :request do
           entity_name: 'Post',
           created_at: DateTime.new(2015, 12, 30, 23, 59, 59).utc
         )
-        get "/ud_sync/operations?since=2016-01-01T10:10:10Z", nil
+        get "/ud_sync/operations?since=2016-01-01T10:10:10Z"
 
         expect(response.code).to eq('200')
         expect(json_response).to eq({
